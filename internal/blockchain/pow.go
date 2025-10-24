@@ -38,6 +38,7 @@ func NewProofOfWork(block *Block, difficulty int) *ProofOfWork {
 func (pow *ProofOfWork) Run() (string, int) {
 	var nonce int
 	var hash string
+	slog.Info("开始挖矿...", "target", pow.Target)
 	for {
 		data := pow.Block.Data + strconv.Itoa(pow.Block.Index) + pow.Block.PrevHash + strconv.Itoa(nonce)
 		hashBytes := sha256.Sum256([]byte(data))
@@ -47,6 +48,6 @@ func (pow *ProofOfWork) Run() (string, int) {
 		}
 		nonce++
 	}
-	slog.Info("工作量证明成功", "nonce", nonce, "hash", hash)
+	slog.Info("挖矿成功", "nonce", nonce, "hash", hash)
 	return hash, nonce
 }
