@@ -1,9 +1,9 @@
-package main
+package blockchain
 
 import "testing"
 
 func Test_initBlockchain(t *testing.T) {
-	initBlockchain()
+	InitBlockchain()
 
 	addBlock("区块1的数据")
 	addBlock("区块2的数据")

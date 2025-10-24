@@ -1,4 +1,4 @@
-package main
+package blockchain
 
 import (
 	"crypto/sha256"
@@ -24,6 +24,7 @@ type Block struct {
 	Data      string // 数据
 	PrevHash  string // 前一个区块的哈希值
 	Hash      string // 当前区块的哈希值
+	Nonce     int    // 工作量证明的nonce值
 }
 
 // calculateHash 计算区块的哈希值
@@ -40,7 +41,7 @@ func calculateHash(block Block) string {
 	return hex.EncodeToString(hash.Sum(nil))
 }
 
-// generateBlock 生成新的区块
+// GenerateBlock 生成新的区块
 //
 // 生成新的区块，设置索引为前一个区块的索引加1，时间戳为当前时间，数据为传入的数据，前一个哈希值为前一个区块的哈希值，当前哈希值为新计算的哈希值。
 // 参数:
@@ -49,7 +50,7 @@ func calculateHash(block Block) string {
 //
 // 返回值:
 //   - 新的区块
-func generateBlock(prevBlock Block, data string) Block {
+func GenerateBlock(prevBlock Block, data string, difficulty int) Block {
 	newBlock := Block{
 		Index:     prevBlock.Index + 1,
 		Timestamp: time.Now().Format(time.RFC3339),
@@ -57,5 +58,9 @@ func generateBlock(prevBlock Block, data string) Block {
 		PrevHash:  prevBlock.Hash,
 	}
 	newBlock.Hash = calculateHash(newBlock)
+	pow := NewProofOfWork(&newBlock, difficulty)
+	hash, nonce := pow.Run()
+	newBlock.Hash = hash
+	newBlock.Nonce = nonce
 	return newBlock
 }

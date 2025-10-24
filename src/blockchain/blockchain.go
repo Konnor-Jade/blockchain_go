@@ -1,4 +1,4 @@
-package main
+package blockchain
 
 import "time"
 
@@ -20,12 +20,12 @@ func createGenesisBlock() Block {
 	return genesisBlock
 }
 
-// initBlockchain 初始化区块链
+// InitBlockchain 初始化区块链
 //
 // 功能：
 //   - 创建创世区块
 //   - 将创世区块添加到区块链中
-func initBlockchain() {
+func InitBlockchain() {
 	genesisBlock := createGenesisBlock()
 	Blockchain = append(Blockchain, genesisBlock)
 }
@@ -40,6 +40,6 @@ func initBlockchain() {
 //   - 将新的区块添加到区块链中
 func addBlock(data string) {
 	prevBlock := Blockchain[len(Blockchain)-1]
-	newBlock := generateBlock(prevBlock, data)
+	newBlock := GenerateBlock(prevBlock, data, 4)
 	Blockchain = append(Blockchain, newBlock)
 }
